@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="quransdk_header_text">14sp</dimen>
+    <dimen name="quransdk_ayah_text">22sp</dimen>
+    <dimen name="quransdk_page_padding">12dp</dimen>
+</resources>

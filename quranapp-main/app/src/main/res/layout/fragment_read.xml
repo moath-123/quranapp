@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.viewpager2.widget.ViewPager2 xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pagerSurah"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F3E8D7"
+    tools:context=".fragments.ReadFragment">
+
+    <EditText
+        android:id="@+id/edtSearchAya"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/search_bar_border"
+        android:drawableStart="@drawable/baseline_search_black_24dp"
+        android:drawablePadding="@dimen/_8sdp"
+        android:drawableTint="@color/grey_color"
+        android:gravity="center_vertical"
+        android:hint="Search Here.."
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_8sdp"
+        android:textSize="@dimen/_10ssp" />
+
+    <ScrollView
+        android:id="@+id/scrollRead"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/txtMushaf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textDirection="rtl"
+            android:gravity="end"
+            android:textAlignment="viewEnd"
+            android:textSize="22sp"
+            android:lineSpacingExtra="6dp"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/uthmanic_hafs_regular"
+            android:textColor="@android:color/black" />
+
+    </ScrollView>
+
+</LinearLayout>
+-->

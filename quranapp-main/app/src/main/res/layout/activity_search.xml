@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/quran_bg_color"
+    android:orientation="vertical">
+
+    <include
+         android:id="@+id/searchAppBar"
+         layout="@layout/top_app_bar" />
+
+     <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/edtSearchBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:background="@drawable/search_bar_border"
+            android:drawableStart="@drawable/baseline_search_black_24dp"
+            android:drawablePadding="@dimen/_8sdp"
+            android:drawableTint="@color/quran_serial_no_color"
+            android:gravity="center_vertical|start"
+            android:hint="Search Aya Sura"
+            android:imeOptions="actionSearch"
+            android:includeFontPadding="false"
+            android:minHeight="@dimen/_42sdp"
+            android:paddingStart="@dimen/_12sdp"
+            android:paddingTop="0dp"
+            android:paddingEnd="@dimen/_12sdp"
+            android:paddingBottom="0dp"
+            android:singleLine="true"
+            android:textAlignment="viewStart"
+            android:textColorHint="@color/quran_serial_no_color"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:id="@+id/txtSearchCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:background="@color/quran_serial_no_color"
+            android:padding="@dimen/_4sdp"
+            android:textColor="@color/white"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvResults"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

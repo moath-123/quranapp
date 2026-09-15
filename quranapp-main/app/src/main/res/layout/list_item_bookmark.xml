@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_8sdp"
+    android:orientation="horizontal"
+    app:cardCornerRadius="@dimen/_8sdp"
+    app:cardElevation="@dimen/_8sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_8sdp"
+        android:orientation="horizontal"
+        android:padding="@dimen/_4sdp"
+        android:weightSum="2">
+
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_weight="0.22"
+            android:gravity="center"
+            android:src="@drawable/bookmark"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.75"
+            android:paddingLeft="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/txtBookmarkedAya"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="إِيَّاكَ نَعۡبُدُ وَإِيَّاكَ نَسۡتَعِينُ"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtBookmarkType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtBookmarkedAya"
+                android:text="Type: Surah Fatiha"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_10ssp" />
+
+            <TextView
+                android:id="@+id/txtBookMarkHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtBookmarkType"
+                android:text="Hint: Nothing"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_10ssp" />
+
+            <TextView
+                android:id="@+id/txtBookmarkSuratDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtBookMarkHint"
+                android:text="Surah Al-An'am - Page: 128, Juz' 7, Verses 6"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_10ssp" />
+
+            <TextView
+                android:id="@+id/txtBookmarkDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtBookmarkSuratDetails"
+                android:text="27-01-2026"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_10ssp" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

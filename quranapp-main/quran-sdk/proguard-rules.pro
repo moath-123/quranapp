@@ -1,0 +1,1 @@
+# Quran SDK ProGuard rules

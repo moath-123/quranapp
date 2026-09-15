@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.SdkClientTest" parent="Theme.QuranApp">
+        <item name="android:statusBarColor">@color/sdk_client_primary_dark</item>
+        <item name="android:navigationBarColor">@color/sdk_client_bg</item>
+        <item name="android:windowBackground">@color/sdk_client_bg</item>
+    </style>
+
+</resources>

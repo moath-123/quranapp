@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardApiAction"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_6sdp"
+    app:cardBackgroundColor="@color/sdk_client_surface"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/sdk_client_border"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:id="@+id/layoutApiItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sdk_api_item_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/txtApiMethod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="getSurahs()"
+            android:textColor="@color/sdk_client_primary"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtApiDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="Returns all surahs"
+            android:textColor="@color/sdk_client_text_secondary"
+            android:textSize="@dimen/_9ssp" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

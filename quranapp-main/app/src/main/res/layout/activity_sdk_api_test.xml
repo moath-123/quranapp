@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sdk_client_bg"
+    tools:context=".sdktest.SdkApiTestActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarSdkTest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/sdk_client_primary"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:subtitle="Client Integration Demo"
+        app:subtitleTextColor="#B3FFFFFF"
+        app:title="Quran SDK"
+        app:titleTextColor="@color/white_color" />
+
+    <LinearLayout
+        android:id="@+id/layoutTabs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/sdk_client_primary_dark"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarSdkTest">
+
+        <TextView
+            android:id="@+id/tabApiExplorer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:background="@drawable/sdk_tab_selected_bg"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="API Explorer"
+            android:textColor="@color/white_color"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tabBookmarks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:background="@drawable/sdk_tab_unselected_bg"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="Client Bookmarks"
+            android:textColor="#CCFFFFFF"
+            android:textSize="@dimen/_10ssp" />
+
+    </LinearLayout>
+
+    <!-- API Explorer panel -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/panelApiExplorer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutTabs">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_12sdp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/sdk_client_surface"
+                app:cardCornerRadius="@dimen/_14sdp"
+                app:cardElevation="@dimen/_4sdp"
+                app:strokeColor="@color/sdk_client_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_14sdp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="SDK Connection"
+                        android:textColor="@color/sdk_client_accent"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:id="@+id/viewStatusDot"
+                            android:layout_width="@dimen/_10sdp"
+                            android:layout_height="@dimen/_10sdp"
+                            android:background="@drawable/sdk_status_dot_off" />
+
+                        <TextView
+                            android:id="@+id/txtSdkStatus"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_weight="1"
+                            android:text="Not connected"
+                            android:textColor="@color/sdk_client_text"
+                            android:textSize="@dimen/_11ssp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/chipSurahCount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/sdk_stat_chip_bg"
+                            android:gravity="center"
+                            android:padding="@dimen/_8sdp"
+                            android:text="Surahs\n—"
+                            android:textAlignment="center"
+                            android:textColor="@color/sdk_client_primary"
+                            android:textSize="@dimen/_9ssp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/chipJuzCount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_4sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/sdk_stat_chip_bg"
+                            android:gravity="center"
+                            android:padding="@dimen/_8sdp"
+                            android:text="Juz\n—"
+                            android:textAlignment="center"
+                            android:textColor="@color/sdk_client_primary"
+                            android:textSize="@dimen/_9ssp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/chipMaxPage"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/sdk_stat_chip_bg"
+                            android:gravity="center"
+                            android:padding="@dimen/_8sdp"
+                            android:text="Pages\n—"
+                            android:textAlignment="center"
+                            android:textColor="@color/sdk_client_primary"
+                            android:textSize="@dimen/_9ssp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnInitialize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:text="initialize()"
+                        app:backgroundTint="@color/sdk_client_accent"
+                        app:cornerRadius="@dimen/_10sdp"
+                        app:icon="@drawable/outline_read_quran_24"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/white_color" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:text="Available APIs"
+                android:textColor="@color/sdk_client_text"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvApiList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_sdk_api_action" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                app:cardBackgroundColor="@color/sdk_client_surface"
+                app:cardCornerRadius="@dimen/_14sdp"
+                app:cardElevation="@dimen/_2sdp"
+                app:strokeColor="@color/sdk_client_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_14sdp">
+
+                    <TextView
+                        android:id="@+id/txtSelectedApi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:text="getSurahs()"
+                        android:textColor="@color/sdk_client_primary"
+                        android:textSize="@dimen/_11ssp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtSelectedApiDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:text="Returns list of all 114 surahs"
+                        android:textColor="@color/sdk_client_text_secondary"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutSdkInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:hint="Input value"
+                        android:visibility="gone"
+                        app:boxStrokeColor="@color/sdk_client_accent"
+                        app:hintTextColor="@color/sdk_client_text_secondary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtSdkInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/sdk_client_text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRunApi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="Execute API"
+                        app:backgroundTint="@color/sdk_client_primary"
+                        app:cornerRadius="@dimen/_10sdp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                app:cardBackgroundColor="@color/sdk_client_surface"
+                app:cardCornerRadius="@dimen/_14sdp"
+                app:cardElevation="@dimen/_4sdp"
+                app:strokeColor="@color/sdk_client_accent"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_14sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="API Response"
+                            android:textColor="@color/sdk_client_text"
+                            android:textSize="@dimen/_13ssp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtResultCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/sdk_stat_chip_bg"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:paddingVertical="@dimen/_4sdp"
+                            android:text="0 items"
+                            android:textColor="@color/sdk_client_primary"
+                            android:textSize="@dimen/_9ssp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtLastApiCall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:fontFamily="monospace"
+                        android:text="Last call: —"
+                        android:textColor="@color/sdk_client_text_secondary"
+                        android:textSize="@dimen/_9ssp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:text="Tap bookmark icon on ayah results — saved client-side (not SDK API)"
+                        android:textColor="@color/sdk_client_accent"
+                        android:textSize="@dimen/_9ssp" />
+
+                    <TextView
+                        android:id="@+id/txtEmptyResults"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_20sdp"
+                        android:text="No response yet.\nInitialize SDK → select API → Execute API"
+                        android:textAlignment="center"
+                        android:textColor="@color/sdk_client_text_secondary"
+                        android:textSize="@dimen/_11ssp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvSdkResults"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="gone"
+                        tools:listitem="@layout/item_sdk_test_result"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Client bookmarks panel (app-side only, not SDK) -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/panelBookmarks"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:padding="@dimen/_12sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutTabs">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/sdk_client_surface"
+                app:cardCornerRadius="@dimen/_14sdp"
+                app:strokeColor="@color/sdk_client_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_14sdp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Client Bookmarks"
+                        android:textColor="@color/sdk_client_text"
+                        android:textSize="@dimen/_13ssp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:text="Managed by client app using SharedPreferences — not part of Quran SDK"
+                        android:textColor="@color/sdk_client_text_secondary"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <TextView
+                        android:id="@+id/txtBookmarkCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/sdk_stat_chip_bg"
+                        android:paddingHorizontal="@dimen/_12sdp"
+                        android:paddingVertical="@dimen/_6sdp"
+                        android:text="0 saved"
+                        android:textColor="@color/sdk_client_primary"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/txtEmptyBookmarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:gravity="center"
+                android:text="No bookmarks yet.\nBookmark ayahs from API Response tab."
+                android:textAlignment="center"
+                android:textColor="@color/sdk_client_text_secondary"
+                android:textSize="@dimen/_11ssp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBookmarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"
+                tools:listitem="@layout/item_sdk_test_result" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressSdkTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/sdk_client_accent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

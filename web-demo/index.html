@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مصحف — نموذج تجريبي</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="device">
+
+  <!-- شاشة التحميل: تحاكي QuranApi.initialize() -->
+  <div class="splash" id="splash">
+    <div class="splash-mark">﴿ ﴾</div>
+    <div class="splash-title">القرآن الكريم</div>
+    <div class="splash-sub" id="splashMsg">جاري تهيئة البيانات…</div>
+    <div class="splash-bar"><span id="splashBar"></span></div>
+  </div>
+
+  <!-- الفهرس -->
+  <section class="screen" id="screen-index" data-title="الفهرس">
+    <header class="topbar">
+      <h1>القرآن الكريم</h1>
+    </header>
+    <div class="scroll">
+      <button class="continue-card" id="continueCard">
+        <div>
+          <div class="continue-label">متابعة القراءة</div>
+          <div class="continue-title" id="continueTitle">سورة الفاتحة</div>
+          <div class="continue-meta" id="continueMeta">صفحة ١</div>
+        </div>
+        <div class="continue-go">←</div>
+      </button>
+      <div class="segmented" role="tablist">
+        <button class="seg active" data-seg="suras">السور</button>
+        <button class="seg" data-seg="juz">الأجزاء</button>
+      </div>
+      <ul class="list" id="suraList"></ul>
+      <ul class="list" id="juzList" hidden></ul>
+    </div>
+  </section>
+
+  <!-- المصحف: يحاكي QuranPageView -->
+  <section class="screen reader" id="screen-reader" data-title="المصحف" hidden>
+    <header class="reader-head">
+      <span id="rSurah">الفاتحة</span>
+      <span class="r-page" id="rPage">١</span>
+      <span id="rJuz">آلم</span>
+    </header>
+    <div class="page-wrap" id="pageWrap">
+      <div class="mushaf-view" id="mushafView">
+        <div class="sheet" id="sheet">
+          <img id="pageImg" alt="صفحة من مصحف المدينة" draggable="false">
+          <svg id="pageMarks" viewBox="0 0 1024 1656" preserveAspectRatio="none"></svg>
+        </div>
+      </div>
+      <article class="page" id="page" hidden></article>
+    </div>
+    <div class="reader-tools">
+      <button class="icon-btn" id="prevBtn" aria-label="الصفحة السابقة">›</button>
+      <div class="slider-box">
+        <input type="range" id="pageSlider" min="1" max="604" value="1" dir="rtl" aria-label="الانتقال إلى صفحة">
+      </div>
+      <button class="icon-btn" id="nextBtn" aria-label="الصفحة التالية">‹</button>
+      <div class="mode-toggle" id="modeToggle">
+        <button data-mode="mushaf" class="active">مصحف</button>
+        <button data-mode="text">نص</button>
+      </div>
+      <div class="font-ctrl" id="fontCtrl" hidden>
+        <button class="icon-btn sm" id="fontDown" aria-label="تصغير الخط">أ-</button>
+        <button class="icon-btn sm" id="fontUp" aria-label="تكبير الخط">أ+</button>
+      </div>
+    </div>
+    <div class="ayah-bar" id="ayahBar" hidden></div>
+  </section>
+
+  <!-- البحث -->
+  <section class="screen" id="screen-search" data-title="البحث" hidden>
+    <header class="topbar"><h1>البحث</h1></header>
+    <div class="search-box">
+      <input type="search" id="searchInput" placeholder="ابحث بكلمة أو رقم صفحة… مثال: الرحمن" autocomplete="off">
+    </div>
+    <div class="search-meta" id="searchMeta"></div>
+    <div class="scroll"><ul class="list results" id="results"></ul></div>
+  </section>
+
+  <!-- المفضلة: تخزين في جهة التطبيق (مثل ClientBookmarkStore) -->
+  <section class="screen" id="screen-bookmarks" data-title="المفضلة" hidden>
+    <header class="topbar"><h1>المفضلة</h1></header>
+    <div class="scroll"><ul class="list" id="bookmarkList"></ul></div>
+  </section>
+
+  <!-- مختبر الـSDK: يحاكي SdkApiTestActivity -->
+  <section class="screen" id="screen-api" data-title="SDK" hidden>
+    <header class="topbar"><h1>مختبر QuranApi</h1></header>
+    <div class="scroll">
+      <p class="api-intro">جرّب دوال الـSDK نفسها وشوف شكل البيانات الراجعة.</p>
+      <div id="apiList"></div>
+    </div>
+  </section>
+
+  <!-- قائمة الضغط المطوّل: الـSDK يرسل الإحداثيات والتطبيق يعرض قائمته -->
+  <div class="popup" id="popup" hidden>
+    <div class="popup-head" id="popupHead"></div>
+    <button data-act="bookmark" id="popBookmark">★ إضافة للمفضلة</button>
+    <button data-act="copy">⧉ نسخ الآية</button>
+    <button data-act="close">إغلاق</button>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <nav class="tabbar">
+    <button class="tab active" data-tab="index">
+      <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg><span>الفهرس</span>
+    </button>
+    <button class="tab" data-tab="reader">
+      <svg viewBox="0 0 24 24"><path d="M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5zM12 6v14"/></svg><span>المصحف</span>
+    </button>
+    <button class="tab" data-tab="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><span>البحث</span>
+    </button>
+    <button class="tab" data-tab="bookmarks">
+      <svg viewBox="0 0 24 24"><path d="M6 3.5h12v17l-6-4-6 4z"/></svg><span>المفضلة</span>
+    </button>
+    <button class="tab" data-tab="api">
+      <svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg><span>SDK</span>
+    </button>
+  </nav>
+</div>
+
+<script src="data.js"></script>
+<script src="page-rects.js"></script>
+<script src="quran-api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

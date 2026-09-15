@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_8sdp"
+    app:cardBackgroundColor="@color/sdk_client_surface"
+    app:cardCornerRadius="@dimen/_12sdp"
+    app:cardElevation="@dimen/_2sdp"
+    app:strokeColor="@color/sdk_client_border"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_12sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtItemBadge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/sdk_stat_chip_bg"
+                android:fontFamily="monospace"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="getSurahs()"
+                android:textColor="@color/sdk_client_primary"
+                android:textSize="@dimen/_8ssp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/btnBookmark"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Bookmark ayah"
+                android:padding="@dimen/_2sdp"
+                android:src="@drawable/bookmark"
+                android:visibility="gone"
+                app:tint="@color/sdk_client_text_secondary" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:textColor="@color/sdk_client_primary"
+            android:textSize="@dimen/_11ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtItemSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:textColor="@color/sdk_client_text_secondary"
+            android:textSize="@dimen/_10ssp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:background="@color/sdk_client_border" />
+
+        <TextView
+            android:id="@+id/txtItemBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@color/sdk_client_text"
+            android:textSize="@dimen/_12ssp" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

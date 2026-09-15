@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/_4sdp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_12sdp">
+
+            <TextView
+                android:id="@+id/txtSurahName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:gravity="start"
+                android:text="سورة الفاتحة"
+                android:textColor="@color/quran_serial_no_color"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtPageNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/quran_serial_no_color"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtChapterName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="end"
+                android:text="الم"
+                android:textColor="@color/quran_serial_no_color"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtPageText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:breakStrategy="high_quality"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/kfgqpc_uthman_taha_naskh_regular"
+            android:gravity="start"
+            android:hyphenationFrequency="none"
+            android:includeFontPadding="false"
+            android:longClickable="true"
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/black"
+            android:textDirection="rtl"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/_16ssp" />
+
+
+        <!--<TextView
+            android:id="@+id/txtPageText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/uthmanic_hafs_regular"
+            android:gravity="end"
+            android:includeFontPadding="false"
+            android:textAlignment="viewEnd"
+            android:textColor="@android:color/black"
+            android:textDirection="rtl"
+            android:textSize="@dimen/_15ssp" />-->
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

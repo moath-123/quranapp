@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/quran_bg_color"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/_5sdp"
+    android:paddingTop="@dimen/_8sdp"
+    android:paddingRight="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_8sdp"
+    android:weightSum="8">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/baseline_account_circle_black_24dp"
+        android:tint="@color/quran_text_color" />
+
+
+    <TextView
+        android:id="@+id/mainText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:text="@string/quran_pro"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold" />
+
+
+    <ImageView
+        android:id="@+id/btnSearchText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/baseline_search_black_24dp"
+        app:tint="@color/bottom_nav_icon_color" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/baseline_settings_black_24dp"
+        app:tint="@color/bottom_nav_icon_color" />
+
+
+</LinearLayout>

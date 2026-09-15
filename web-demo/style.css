@@ -1,0 +1,223 @@
+@font-face { font-family: "Hafs"; src: url("fonts/uthmanic_hafs_regular.otf") format("opentype"); font-display: swap; }
+@font-face { font-family: "TahaNaskh"; src: url("fonts/kfgqpc_uthman_taha_naskh_regular.ttf") format("truetype"); font-display: swap; }
+
+:root {
+  --ground: #e9e1d3;
+  --bg: #f7f1e6;
+  --surface: #fffaf1;
+  --page: #fdf6e9;
+  --ink: #372f23;
+  --ink-2: #7a6b5a;
+  --line: #e4d8c4;
+  --accent: #b3612b;
+  --accent-soft: #f3e3d2;
+  --gold: #c9a45c;
+  --hl: rgba(255, 226, 120, .55);
+  --hl-strong: rgba(179, 97, 43, .18);
+  --shadow: 0 1px 2px rgba(55, 47, 35, .06), 0 8px 24px rgba(55, 47, 35, .08);
+  --ayah-size: 25px;
+  --paper: #fffdf7;
+  --page-filter: none;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #0f0d0a; --bg: #1a1713; --surface: #221e19; --page: #1f1b16;
+    --ink: #eadfcb; --ink-2: #a8998a; --line: #3a332a; --accent: #e0935c; --accent-soft: #3a2a1d;
+    --gold: #c9a45c; --hl: rgba(201, 164, 92, .28); --hl-strong: rgba(224, 147, 92, .22);
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    --paper: #1c1914;
+    --page-filter: invert(.88) sepia(.35) hue-rotate(-8deg);
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--ground); color: var(--ink);
+  font: 15px/1.5 -apple-system, "SF Arabic", "Geeza Pro", "Segoe UI", Tahoma, sans-serif;
+  display: flex; justify-content: center;
+}
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
+[hidden] { display: none !important; }
+
+.device {
+  position: relative; width: 100%; max-width: 430px; height: 100dvh;
+  background: var(--bg); display: flex; flex-direction: column; overflow: hidden;
+}
+@media (min-width: 520px) {
+  body { align-items: center; }
+  .device { height: min(900px, calc(100dvh - 32px)); border-radius: 34px; box-shadow: 0 30px 80px rgba(0,0,0,.25); border: 8px solid #1b1814; }
+}
+
+/* ---------- splash ---------- */
+.splash {
+  position: absolute; inset: 0; z-index: 50; background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  transition: opacity .35s ease;
+}
+.splash.done { opacity: 0; pointer-events: none; }
+.splash-mark { font-family: "Hafs", serif; font-size: 54px; color: var(--accent); letter-spacing: 12px; }
+.splash-title { font-family: "TahaNaskh", serif; font-size: 34px; }
+.splash-sub { color: var(--ink-2); font-size: 13px; }
+.splash-bar { width: 160px; height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+.splash-bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+
+/* ---------- screens ---------- */
+.screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.topbar { padding: 18px 20px 10px; }
+.topbar h1 { margin: 0; font-size: 26px; font-family: "TahaNaskh", serif; font-weight: normal; }
+.scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 16px; }
+
+.continue-card {
+  width: 100%; display: flex; justify-content: space-between; align-items: center; text-align: right;
+  background: linear-gradient(135deg, var(--accent), #8a4a20); color: #fff8ee;
+  border-radius: 18px; padding: 16px 18px; margin: 4px 0 14px; box-shadow: var(--shadow);
+}
+.continue-label { font-size: 12px; opacity: .85; }
+.continue-title { font-family: "TahaNaskh", serif; font-size: 24px; line-height: 1.4; }
+.continue-meta { font-size: 13px; opacity: .9; }
+.continue-go { font-size: 22px; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.18); display: grid; place-items: center; }
+
+.segmented { display: flex; background: var(--line); border-radius: 12px; padding: 3px; margin-bottom: 8px; position: sticky; top: 0; z-index: 2; }
+.seg { flex: 1; padding: 7px 0; border-radius: 9px; font-size: 14px; color: var(--ink-2); }
+.seg.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.1); font-weight: 600; }
+
+.list { list-style: none; margin: 0; padding: 0; }
+.row {
+  display: flex; align-items: center; gap: 14px; padding: 12px 4px; border-bottom: 1px solid var(--line);
+  cursor: pointer; width: 100%; text-align: right;
+}
+.row:active { background: var(--accent-soft); }
+.num {
+  flex: none; width: 38px; height: 38px; display: grid; place-items: center; font-size: 13px; font-weight: 600;
+  color: var(--accent); position: relative;
+}
+.num::before {
+  content: ""; position: absolute; inset: 3px; border: 1.5px solid var(--gold); transform: rotate(45deg); border-radius: 6px;
+}
+.row-main { flex: 1; min-width: 0; }
+.row-title { display: block; font-family: "TahaNaskh", serif; font-size: 20px; line-height: 1.35; }
+.row-sub { display: block; font-size: 12px; color: var(--ink-2); }
+.row-end { font-size: 12px; color: var(--ink-2); text-align: left; flex: none; }
+.row-end b { display: block; color: var(--ink); font-weight: 600; font-size: 13px; }
+
+/* ---------- reader (QuranPageView) ---------- */
+.reader { background: var(--page); }
+.reader-head {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 12px 18px 6px;
+  color: var(--accent); font-weight: 700; font-size: 14px;
+}
+.reader-head span:first-child { text-align: right; }
+.reader-head span:last-child { text-align: left; font-family: "Hafs", serif; font-weight: normal; font-size: 17px; }
+.r-page { min-width: 34px; text-align: center; padding: 1px 10px; border: 1px solid var(--gold); border-radius: 20px; font-size: 13px; }
+.page-wrap { flex: 1; min-height: 0; overflow: hidden; position: relative; touch-action: pan-y; }
+.page {
+  height: 100%; overflow-y: auto; padding: 6px 20px 24px;
+  font-family: "Hafs", "Amiri Quran", serif; font-size: var(--ayah-size); line-height: 2.05;
+  text-align: justify; text-align-last: center; direction: rtl; color: var(--ink);
+  transition: transform .22s ease, opacity .22s ease; -webkit-user-select: none; user-select: none;
+}
+.slide-next { transform: translateX(-30%); opacity: 0; }
+.slide-prev { transform: translateX(30%); opacity: 0; }
+.enter-next { transform: translateX(30%); opacity: 0; transition: none !important; }
+.enter-prev { transform: translateX(-30%); opacity: 0; transition: none !important; }
+
+/* ---------- صفحة مصحف المدينة (صورة + طبقة تظليل الآيات) ---------- */
+.mushaf-view { height: 100%; display: flex; align-items: center; justify-content: center; }
+.sheet {
+  position: relative; flex: none; background: var(--paper); border-radius: 3px;
+  /* إطار مزدوج ذهبي مثل حواف المصحف */
+  box-shadow: 0 0 0 5px var(--paper), 0 0 0 6.5px var(--gold), 0 0 0 9px var(--paper), 0 0 0 10px var(--gold),
+              0 6px 22px 10px rgba(55, 47, 35, .14);
+  transition: transform .22s ease, opacity .22s ease; -webkit-user-select: none; user-select: none; touch-action: pan-y;
+}
+.sheet img, .sheet svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.sheet img { filter: var(--page-filter); }
+.sheet svg rect { transition: fill .15s; }
+.m-tap { fill: var(--hl); }
+.m-press { fill: var(--hl-strong); }
+.m-bm { fill: rgba(179, 97, 43, .10); }
+
+.mode-toggle { display: flex; background: var(--accent-soft); border-radius: 18px; padding: 2px; flex: none; }
+.mode-toggle button { padding: 5px 10px; border-radius: 16px; font-size: 12px; color: var(--accent); }
+.mode-toggle button.active { background: var(--accent); color: #fff; font-weight: 600; }
+.sura-head {
+  display: block; text-align: center; margin: 10px 0 4px; padding: 4px 0; font-size: 1.05em; color: var(--accent);
+  border: 1.5px solid var(--gold); border-radius: 12px; background: var(--accent-soft);
+  font-family: "TahaNaskh", serif;
+}
+.bismillah { display: block; text-align: center; color: var(--accent); margin-bottom: 4px; }
+.ayah { border-radius: 6px; cursor: pointer; transition: background .15s; }
+.ayah.tapped { background: var(--hl); }
+.ayah.pressed { background: var(--hl-strong); }
+.ayah.bookmarked .marker { color: var(--accent); }
+.marker { color: var(--gold); font-size: .95em; white-space: nowrap; }
+
+.reader-tools { display: flex; align-items: center; gap: 8px; padding: 6px 12px 8px; border-top: 1px solid var(--line); background: var(--page); }
+.icon-btn { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 22px; color: var(--accent); background: var(--accent-soft); flex: none; }
+.icon-btn.sm { font-size: 13px; font-weight: 700; width: 32px; height: 32px; }
+.slider-box { flex: 1; }
+.font-ctrl { display: flex; gap: 4px; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+
+.ayah-bar {
+  position: absolute; left: 12px; right: 12px; bottom: 128px; z-index: 5;
+  background: var(--ink); color: var(--bg); border-radius: 14px; padding: 10px 14px; font-size: 13px;
+  box-shadow: var(--shadow); display: flex; justify-content: space-between; gap: 10px; align-items: center;
+}
+.ayah-bar small { opacity: .7; }
+
+/* ---------- long-press popup ---------- */
+.popup {
+  position: absolute; z-index: 30; min-width: 190px; background: var(--surface); border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.25);
+  border: 1px solid var(--line); overflow: hidden; animation: pop .14s ease-out;
+}
+@keyframes pop { from { transform: scale(.92); opacity: 0; } }
+.popup-head { padding: 10px 14px; font-size: 12px; color: var(--ink-2); border-bottom: 1px solid var(--line); }
+.popup button { display: block; width: 100%; text-align: right; padding: 11px 14px; font-size: 14px; }
+.popup button:hover, .popup button:active { background: var(--accent-soft); }
+.popup button[data-act=close] { color: var(--ink-2); border-top: 1px solid var(--line); }
+
+/* ---------- search ---------- */
+.search-box { padding: 0 16px 8px; }
+.search-box input {
+  width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface);
+  color: var(--ink); font: inherit; font-size: 16px; outline: none;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-meta { padding: 0 20px 6px; font-size: 12px; color: var(--ink-2); min-height: 18px; }
+.result { display: block; padding: 12px 4px; border-bottom: 1px solid var(--line); cursor: pointer; width: 100%; text-align: right; }
+.result-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-2); margin-bottom: 4px; }
+.result-top b { color: var(--accent); font-weight: 600; }
+.result-text { font-family: "Hafs", serif; font-size: 20px; line-height: 1.9; }
+mark { background: var(--hl); color: inherit; border-radius: 4px; padding: 0 1px; }
+.empty { text-align: center; color: var(--ink-2); padding: 48px 20px; }
+.empty .big { font-size: 40px; color: var(--gold); display: block; margin-bottom: 6px; }
+
+/* ---------- bookmarks ---------- */
+.bm-del { font-size: 18px; color: var(--ink-2); width: 34px; height: 34px; border-radius: 50%; flex: none; }
+.bm-del:hover { background: var(--accent-soft); color: var(--accent); }
+.bm-text { font-family: "Hafs", serif; font-size: 18px; line-height: 1.8; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+/* ---------- API lab ---------- */
+.api-intro { color: var(--ink-2); font-size: 13px; margin: 0 4px 12px; }
+.api-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
+.api-row { display: flex; align-items: center; gap: 8px; padding: 10px 12px; direction: ltr; }
+.api-sig { flex: 1; font: 13px/1.4 ui-monospace, Menlo, monospace; color: var(--ink); }
+.api-sig input { width: 64px; font: inherit; padding: 2px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); }
+.api-sig input.wide { width: 110px; }
+.api-run { background: var(--accent); color: #fff; padding: 6px 12px; border-radius: 9px; font-size: 13px; font-weight: 600; }
+.api-out { direction: ltr; margin: 0; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--bg); font: 11.5px/1.5 ui-monospace, Menlo, monospace; white-space: pre-wrap; word-break: break-word; max-height: 240px; overflow: auto; color: var(--ink); }
+.api-out .ok { color: #10b981; }
+
+/* ---------- toast + tabbar ---------- */
+.toast {
+  position: absolute; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 40;
+  background: var(--ink); color: var(--bg); padding: 8px 16px; border-radius: 20px; font-size: 13px; white-space: nowrap;
+}
+.tabbar { display: flex; border-top: 1px solid var(--line); background: var(--surface); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); flex: none; }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; color: var(--ink-2); padding: 4px 0; }
+.tab svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.tab.active { color: var(--accent); }

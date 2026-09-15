@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_8sdp"
+    android:layout_marginVertical="@dimen/_6sdp"
+    app:cardCornerRadius="@dimen/_6sdp"
+    app:cardElevation="@dimen/_4sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_6sdp">
+
+        <TextView
+            android:id="@+id/txtJuzCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_vector_star"
+            android:backgroundTint="@color/bottom_nav_icon_color"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/quran_serial_no_color"
+            android:textSize="@dimen/_10ssp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_4sdp"
+            android:layout_toRightOf="@id/txtJuzCount"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtChapterEnName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Juz' 1 • Alif-Lam-Mim - "
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtChapterArName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" آلم"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_10ssp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtChapterPageNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="end"
+            android:text="1"
+            android:textColor="@color/quran_serial_no_color"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <!-- <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:padding="@dimen/_4sdp"
+         android:weightSum="3">
+
+         &lt;!&ndash; Juz Number &ndash;&gt;
+
+
+         &lt;!&ndash; Juz Names &ndash;&gt;
+         <LinearLayout
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="2"
+             android:orientation="vertical"
+             android:paddingStart="@dimen/_8sdp">
+
+
+
+
+         </LinearLayout>
+
+         &lt;!&ndash; Start Page &ndash;&gt;
+
+
+     </LinearLayout>-->
+
+</androidx.cardview.widget.CardView>

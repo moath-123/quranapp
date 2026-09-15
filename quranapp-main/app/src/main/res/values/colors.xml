@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bottom_nav_icon_color">#372f23</color>
+    <color name="grey">#808080</color>
+    <!--372f23,8c8478,c4bcb0,6e665a,51493e,e1d9cc,aca397,1f170d-->
+
+    <color name="quran_text_color">#372f23</color>
+    <color name="quran_bg_color">#fdf6e9</color>
+    <color name="quran_top_info_color">#5b4f44</color>
+    <color name="quran_serial_no_color">#b3612b</color>
+    <color name="highlight_yellow">#66FFF176</color>
+
+
+
+    <color name="color_Primary">#1FC3B3</color>
+    <color name="sub_categories_color">#F44336</color>
+    <color name="color_Primary_Dark">#0A5CAD</color>
+    <color name="primary_light">#FFCDD2</color>
+    <color name="color_Accent">#4CAF50</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+    <color name="text_color">#0A5CAD</color>
+    <color name="transparent_bg">#54B0BEC5</color>
+    <color name="store_bg_color">#6DFFFFFF</color>
+    <color name="add_to_cart_color">#EF9663</color>
+    <color name="grey_90">#263238</color>
+    <color name="grey_color">#D3D3D3</color>
+    <color name="appBar_color">#1D719E</color>
+
+    <color name="theme_color">#b50b09</color>
+    <color name="share_color">#C92A2A </color>
+    <color name="white_color">#FFFFFF</color>
+    <color name="black_color">#000</color>
+    <color name="gradient_text_color">#1E6A9E</color>
+    <color name="bistros_food">#CF242A</color>
+
+</resources>

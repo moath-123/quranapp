@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@color/quransdk_page_bg"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingVertical="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/quransdk_page_padding">
+
+            <TextView
+                android:id="@+id/txtSurahName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/quransdk_header"
+                android:textSize="@dimen/quransdk_header_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtPageNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/quransdk_header"
+                android:textSize="@dimen/quransdk_header_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtChapterName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/quransdk_header"
+                android:textSize="@dimen/quransdk_header_text"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtPageText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:breakStrategy="high_quality"
+            android:gravity="start"
+            android:hyphenationFrequency="none"
+            android:includeFontPadding="false"
+            android:paddingHorizontal="@dimen/quransdk_page_padding"
+            android:textAlignment="viewStart"
+            android:textColor="@color/quransdk_text"
+            android:textDirection="rtl"
+            android:textSize="@dimen/quransdk_ayah_text" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.QuranApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+         <item name="colorPrimary">#FFFFFFFF</item>
+
+    </style>
+
+    <style name="Theme.QuranApp" parent="Base.Theme.QuranApp">
+        <item name="android:statusBarColor">#FFFFFFFF</item>
+        <!-- Dark icons for light background (IMPORTANT) -->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+</resources>

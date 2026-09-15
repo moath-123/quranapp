@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/_6sdp"
+    android:layout_marginHorizontal="@dimen/_8sdp"
+    app:cardCornerRadius="@dimen/_8sdp"
+    app:cardElevation="@dimen/_4sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/_6sdp"
+        android:weightSum="2">
+
+        <!-- Surah Number -->
+        <TextView
+            android:id="@+id/txtSurahNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.22"
+            android:background="@drawable/ic_vector_star"
+            android:backgroundTint="@color/bottom_nav_icon_color"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/quran_serial_no_color"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold" />
+
+        <!-- Names + Meta -->
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.75"
+            android:paddingStart="@dimen/_6sdp">
+
+            <TextView
+                android:id="@+id/txtSurahEngName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Al-Fatihah"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtSurahAyaCountNazol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtSurahEngName"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="Makki • 7 Ayahs"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_8ssp" />
+
+            <TextView
+                android:id="@+id/txtSurahArabicName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="الفاتحة"
+                android:textColor="@color/bottom_nav_icon_color"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
