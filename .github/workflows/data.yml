@@ -1,0 +1,33 @@
+name: Data integrity
+
+on:
+  push:
+    paths:
+      - "quranapp-main/**/quran.json"
+      - "iOS-SDK/QuranSDK_QuranSDK.bundle/**"
+      - "tools/**"
+      - "web-demo/data.js"
+      - "web-demo/page-rects.js"
+      - ".github/workflows/data.yml"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate quran.json against reference data
+        run: python3 tools/validate_data.py --no-report
+
+      - name: Both quran.json copies are identical
+        run: cmp quranapp-main/quran-sdk/src/main/assets/quran.json quranapp-main/app/src/main/assets/quran.json
+
+      - name: Web demo data is up to date
+        run: |
+          python3 tools/build_web_data.py
+          git diff --exit-code -- web-demo/data.js web-demo/page-rects.js

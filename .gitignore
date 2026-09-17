@@ -16,3 +16,5 @@ captures/
 .idea/workspace.xml
 .idea/navEditor.xml
 .idea/assetWizardSettings.xml
+.android-setup.log
+.gradle-build.log

@@ -1,0 +1,189 @@
+# خطة جاهزية Quran SDK قبل اعتمادها في تعاهد
+
+روابط: [الملاحظات](findings.md) · [القرارات](decisions.md) · [الأسئلة المفتوحة](open-questions.md) · [تقرير البيانات](data-validation.md)
+
+## جدول الحالة
+
+| المرحلة | الحالة | ملاحظات |
+|---|---|---|
+| ٠ — التوثيق والقرارات | ✅ مكتملة | 15 ملاحظة، 7 قرارات، 8 أسئلة مفتوحة |
+| ١ — سلامة البيانات | ✅ مكتملة | 0 أخطاء، بند واحد يحتاج مراجعة علمية (حدود الجزأين ٤ و١١) |
+| ٢ — تقوية Android SDK | ⏳ قيد التنفيذ | الأدوات مثبتة، والبناء ناجح بعد إصلاح لغة البناء |
+| ٣أ — تصميم iOS | ⏸ لم تبدأ | |
+| ٣ب — iOS مع Xcode | ⏸ بانتظار تثبيت Xcode | |
+| ٤ — تحويلها لمنتج | ⏸ لم تبدأ | |
+| ٥ — التجربة والإطلاق | ⏸ ينفذها فريق تعاهد | |
+
+### ملاحظات التنفيذ
+- **المرحلة ١:** دُمج `build_page_rects.py` داخل `tools/build_web_data.py` (سكربت واحد يولّد الملفين).
+- **المرحلة ١:** بند «الآيات الممتدة على صفحتين» تبيّن أنه غير موجود أصلاً (F15). صفحات مصحف المدينة تنتهي بنهاية آية، فلا حاجة لحقل `endPage`.
+- **المرحلة ١:** ظهرت مشاكل أكبر من المتوقع: خلط الطبعتين (F3)، وخطأ `getJuzList` (F4)، والأسطر الناقصة (F6)، والمسافة الدخيلة (F7).
+
+---
+
+## الخطة المعتمدة
+
+### السياق
+جاء انتقاد على اعتماد الـSDK (أندرويد + iOS) في تطبيق تعاهد: المكتبة واعدة لكنها غير مختبرة، ومبنية كمشروع جانبي فيها افتراضات لا تناسب تعاهد، ومصحف تعاهد الحالي مستقر.
+المراجعة أكدت الانتقاد بأدلة ملموسة:
+- **ملف iOS المُجمَّع لا يعمل:** `iOS-SDK/QuranSDK.xcframework.zip` مجلدات `Headers` فيه فارغة ولا يوجد `.swiftmodule`، فـ`import QuranSDK` مستحيل. المصدر (`QuranSDKPackage`) عند فريق codesteem وغير متوفر لنا.
+- **iOS مبني على quran-ios:** نفس `ayahinfo_1024.db` ونفس رابط الصور. والمشروع [quran/quran-ios](https://github.com/quran/quran-ios) مفتوح المصدر (Apache-2.0)، ويُحدَّث باستمرار (آخر تحديث أمس)، ويدعم iOS 15، ومقسّم لحزم SPM مع اختبارات.
+- **النسختان مختلفتان:** أندرويد تعرض نصاً بدون مفضلة، و iOS تعرض صوراً وفيها مفضلة (`BookmarkModel`).
+- **البيانات:**
+  - صفحة الفاتحة في `quran.json` مكتوبة ٢ والصحيح ١.
+  - ~~٧٥ آية تمتد على صفحتين~~ (غير صحيح، انظر F15). الصحيح: 56 آية على صفحات مختلفة بسبب خلط طبعتين (F3).
+  - `chapterId ?: 0` يمرّر بيانات ناقصة بصمت.
+- **أندرويد:**
+  - `QuranImporter.importIfNeeded` يعمل بدون transaction، فأي انقطاع في أول تشغيل يترك قاعدة البيانات ناقصة.
+  - لا توجد نسخة للبيانات تُحدَّث عند تغيّر الملف.
+  - التطبيق التجريبي يتطلب `minSdk 35`.
+  - لا توجد اختبارات حقيقية.
+- **الاعتماد على طرف خارجي:** iOS ينزّل ٦٣ ميجا من `files.quran.app` عند أول تشغيل، وترخيص الصور غير موثّق.
+
+**تقنية تعاهد:** Laravel للخادم و Swift للجوال (حسب ظن المستخدم، وتحتاج تأكيد). لذلك **iOS هو الأولوية للدمج**، وأندرويد يُجهَّز كمرجع مختبَر للمنطق والبيانات.
+الحزم التي أرسلها المستخدم تُستخدم هكذا:
+- **quran-ios:** أساس نسخة iOS الجديدة.
+- **@quranjs/api** (MIT، رسمية من Quran Foundation، تحتاج clientId/secret): مصدر موثوق للتحقق من صحة البيانات، ومرجع لو احتاج Laravel محتوى إضافياً.
+- **qcf_quran_lite** (Flutter، MIT، إصدار 0.0.5 من ناشر غير موثّق): مرجع فقط، لا يناسب Swift.
+
+**النتيجة المطلوبة:** SDK مختبرة وموحّدة وموثّقة، مع قرارات واضحة وشروط قبول قابلة للقياس. بعدها يقرر فريق تعاهد الدمج التجريبي خلف مفتاح تشغيل (feature flag) مع بقاء المصحف الحالي كخيار رجوع.
+
+### طريقة التنفيذ
+- أنفّذ الخطوات بنفسي بالترتيب. بعد كل مرحلة: commit ثم push إلى `moath-123/quranapp`، وتقرير مختصر بالنتائج.
+- **الموافقة على الخطة تشمل:**
+  - تنزيل وتثبيت JDK 17 وأدوات Android SDK ومحاكي أندرويد في `~/Library/Android` و `~/tools`، بدون sudo (حوالي ٦–٨ جيجا، والمساحة المتاحة ٥٠ جيجا).
+  - الـcommits والـpush المذكورة.
+- **Xcode يثبّته المستخدم لاحقاً من App Store.** مراحل iOS التي تحتاجه تنتظر ذلك، وأُجهّز ما قبلها.
+- كل الوثائق في `docs/` بالعربي.
+
+---
+
+### المرحلة ٠ — التوثيق والقرارات (بدون أدوات إضافية)
+1. `docs/readiness-plan.md`: نسخة من هذه الخطة مع جدول حالة يُحدَّث بعد كل مرحلة.
+2. `docs/findings.md`: كل ملاحظة موثّقة بالدليل وطريقة إعادة إنتاجها، ومنها خلل الـxcframework (الأمر: `unzip -l` يُظهر `Headers/` فارغة، ولا يوجد `Modules/`).
+3. `docs/decisions.md` (سجل قرارات):
+   - **iOS:** بناء غلاف Swift جديد فوق quran-ios بدل الاعتماد على الملف المُجمَّع. حُدد هذا القرار الآن.
+   - **مصدر الصور:** أوصي بنسخة على خادم تعاهد مع checksum، بعد تأكيد الترخيص.
+   - **العرض:** توحيده على صور مصحف المدينة في النسختين.
+   - **المفضلة والورد:** مسؤولية التطبيق وليست الـSDK.
+4. `docs/open-questions.md` (أسئلة للمستخدم أو فريق تعاهد):
+   - تأكيد تقنية تعاهد، وهل يوجد تطبيق أندرويد.
+   - ترخيص صور Quran.com (مراسلة Quran Foundation).
+   - هل يُطلب مصدر codesteem.
+   - بيانات اعتماد @quranjs/api للتحقق (اختياري).
+   - متطلبات مصحف تعاهد الحالي.
+
+### المرحلة ١ — سلامة البيانات (Python فقط)
+1. سكربت `tools/validate_data.py` يتحقق من:
+   - **هيكل `quran.json`:** ١١٤ سورة و٦٢٣٦ آية، والمعرّفات متسلسلة، وعدد آيات كل سورة يطابق `aya_numbers`.
+   - **الصفحات:** كلها بين ١ و٦٠٤ وبترتيب تصاعدي.
+   - **البدايات:** `page_number` لكل سورة = صفحة أول آية فيها (يكشف خطأ الفاتحة)، وبدايات الأجزاء الثلاثين صحيحة، وكل آية لها `chapter_id`.
+   - **مقارنة مع ملفات iOS:** نص كل آية يطابق `iOS-SDK/QuranSDK_QuranSDK.bundle/quran.ar.uthmani.db`، وكل آية لها مستطيلات في `ayahinfo_1024.db`، مع قائمة الآيات الممتدة على صفحتين.
+   - **مقارنة اختيارية:** مع بيانات quran-ios أو Quran.com API لو توفرت بيانات الاعتماد.
+   - **نتيجة التشغيل:** يرجع خطأ عند أي فشل، ويكتب تقريراً في `docs/data-validation.md`.
+2. **إصلاح الفاتحة (`page_number: 1`)** في النسختين:
+   - `quranapp-main/quran-sdk/src/main/assets/quran.json`
+   - `quranapp-main/app/src/main/assets/quran.json`
+
+   ثم إعادة توليد `web-demo/data.js` (بنفس سكربت التوليد السابق، ويُحفظ في `tools/build_web_data.py` مع `tools/build_page_rects.py`).
+3. **قرار الآيات الممتدة:** توثيقه، وإضافة حقل `endPage` مستنتج من ayahinfo في بيانات النموذج.
+4. **CI:** ملف `.github/workflows/data.yml` يشغّل السكربت عند كل push.
+
+**شرط القبول:** السكربت يمرّ بدون أخطاء على البيانات المُصلحة، ويفشل عمداً على النسخة القديمة (اختبار سلبي).
+
+### المرحلة ٢ — تقوية Android SDK (بعد تثبيت الأدوات)
+1. **الإعداد:**
+   - تثبيت Temurin JDK 17 و Android cmdline-tools، ثم `sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools" "emulator" "system-images;android-35;google_apis;arm64-v8a" "system-images;android-24;default;arm64-v8a"`.
+   - إنشاء `local.properties` (مستثنى من git).
+   - التحقق من `./gradlew :quran-sdk:assembleRelease :app:assembleDebug lint`.
+2. **الإصلاحات** في `quran-sdk/src/main/java/com/codesteem/quransdk/`:
+   - `internal/data/QuranImporter.kt`:
+     - تغليف الاستيراد في `database.withTransaction {}`.
+     - إضافة `DATA_VERSION` (في SharedPreferences) مع إعادة الاستيراد عند تغيّرها.
+     - حساب `startPage` من أقل صفحة بدل الثقة في `pageNumber`.
+     - رفض `chapterId` الفارغ بخطأ واضح بدل القيمة 0.
+   - مراجعة `internal/data/db/QuranDatabase.kt` (الإصدار واستراتيجية الترحيل) و `internal/data/QuranRepository.kt` (منطق البحث).
+   - `app/build.gradle.kts`: تخفيض `minSdk` من 35 إلى 24 ليطابق الـSDK.
+3. **الاختبارات** (إضافة `testImplementation`/`androidTestImplementation` في `quran-sdk/build.gradle.kts`):
+   - **Unit:**
+     - `ArabicNormalizerTest`: التشكيل والهمزات والأرقام العربية.
+     - `QuranRepositorySearchTest`: الترتيب والحد الأقصى، مع DAO مزيف.
+     - `QuranJsonParsingTest`: يقرأ `quran.json` الحقيقي ويطابق القيم المتوقعة.
+   - **Instrumented (على المحاكي):**
+     - `ImportTest`: استيراد كامل، ثم إعادة الاستيراد عند تغيّر النسخة، ثم محاكاة انقطاع والتحقق من عدم بقاء بيانات ناقصة.
+     - `QuranApiContractTest`: كل دوال `QuranApi` بقيم معروفة.
+     - `QuranPageViewSmokeTest` (Espresso): فتح الصفحة، والتقليب، واستدعاء `onAyahTapped`.
+   - **أداء:** قياس زمن أول `initialize()` والذاكرة أثناء تقليب ٥٠ صفحة، مع تسجيل النتائج.
+4. **التشغيل على جهازين:** المحاكي API 24 و API 35، مع لقطات شاشة في `docs/android-test-report.md`.
+5. **CI:** `.github/workflows/android.yml` للبناء واختبارات unit وlint، مع اختبارات المحاكي عبر `reactivecircus/android-emulator-runner`.
+
+**شرط القبول:** البناء والاختبارات كلها ناجحة محلياً وفي CI، والتطبيق التجريبي يعمل على API 24 و API 35.
+
+### المرحلة ٣ — iOS على أساس quran-ios
+### ٣أ — قبل Xcode
+- دراسة حزم quran-ios المناسبة، منها `QuranKit` و `QuranGeometry` وخدمات الصور والقراءة (`Package.swift` في `quran/quran-ios`).
+- تحديد أقل مجموعة حزم نحتاجها.
+- كتابة `docs/ios-design.md`:
+  - واجهة `QuranAPI` مطابقة لأندرويد: `ensureInstalled`، `getSurahs`، `getJuzList`، `search`، `getAyahsByPage`، `getAyahById`، `getFirstAyahOnPage`، `getMaxPage`.
+  - `QuranPageView` (SwiftUI) مع `onAyahTap` و `onAyahLongPress`.
+  - إعدادات عبر `QuranConfig`: رابط الصور، الألوان، مكان التخزين.
+  - إبقاء المفضلة خارج الـSDK لتطابق أندرويد.
+  - جدول تطابق النسختين.
+  - متطلبات ترخيص Apache-2.0 (ملف NOTICE والإشارة للمصدر).
+- هيكل حزمة `ios/TaahudQuranSDK/` (Package.swift ومصادر أولية) مبنية على نفس منطق النموذج المختبَر، تُترجم عند توفر Xcode.
+
+### ٣ب — بعد تثبيت Xcode
+- `swift build` ثم `xcodebuild test` على محاكي iOS 15 وآخر إصدار.
+- تطبيق مثال `ios/Example` أشغّله على المحاكي بأداة iOS Simulator، وأتحقق من:
+  - التقليب والنقر على الآيات والتظليل (نفس `ayahinfo_1024.db`).
+  - التثبيت الأول بدون إنترنت، ثم مع انقطاع أثناء التنزيل.
+- قياس الذاكرة أثناء تقليب الصفحات.
+- **شرط القبول:** الاختبارات ناجحة، والتطبيق المثال يعمل، وجدول التطابق مكتمل.
+
+### المرحلة ٤ — تحويلها لمنتج جاهز للدمج
+- **إزالة الافتراضات:** الألوان والخطوط ومصدر الصور والتخزين كلها قابلة للضبط، والافتراضي آمن.
+- **مصدر الصور:**
+  - سكربت `tools/package_pages.sh` يولّد حزمة صور مع ملف checksums لرفعها على خادم تعاهد.
+  - تحقق من الـchecksum داخل `ensureInstalled`.
+- **الإصدارات:** semver و `CHANGELOG.md` و tag `v1.1.0`؛ نشر Maven لأندرويد، و SPM tag لـiOS.
+- **أدلة الدمج:**
+  - `docs/integration-ios.md` (Swift)، مع مثال تشغيل خلف feature flag والرجوع للمصحف الحالي.
+  - `docs/integration-android.md`.
+- **مقترح لـLaravel:** `docs/laravel-wird-api.md`، مواصفات OpenAPI لمزامنة الورد والمفضلة (`POST/GET /api/wirds`)، كمقترح فقط لعدم توفر كود تعاهد.
+
+### المرحلة ٥ — التجربة والإطلاق (ينفذها فريق تعاهد، وأجهّز أدواتها)
+- `docs/pilot-checklist.md`:
+  - feature flag مع إطلاق تدريجي: ٥٪ ثم ٢٥٪ ثم ١٠٠٪.
+  - مراقبة الأعطال وأوقات التحميل.
+  - **شروط التوقف والرجوع:** نسبة المستخدمين بدون أعطال أقل من المصحف الحالي، أو أي خطأ في النص أو الصفحات.
+  - **شروط الاعتماد النهائي.**
+
+---
+
+### الملفات الأساسية
+- **تعديل:**
+  - `quranapp-main/quran-sdk/src/main/java/com/codesteem/quransdk/internal/data/QuranImporter.kt`
+  - `quranapp-main/quran-sdk/build.gradle.kts`
+  - `quranapp-main/app/build.gradle.kts`
+  - ملفا `quran.json`
+  - `web-demo/data.js` و `web-demo/page-rects.js` (إعادة توليد)
+- **جديد:**
+  - `docs/*`
+  - `tools/validate_data.py` و `tools/build_web_data.py` و `tools/build_page_rects.py` و `tools/package_pages.sh`
+  - `.github/workflows/{data,android}.yml`
+  - `quran-sdk/src/test/**` و `quran-sdk/src/androidTest/**`
+  - `ios/TaahudQuranSDK/**` و `ios/Example/**`
+- **إعادة استخدام:**
+  - منطق التطبيع في `internal/util/ArabicNormalizer.kt` (له نسخة JS في `web-demo/quran-api.js`).
+  - منطق تحويل ayahinfo إلى مستطيلات، المستخدم في `web-demo/page-rects.js`.
+  - واجهة `api/QuranApi.kt` كعقد مرجعي لنسخة iOS.
+
+### التحقق
+- **المرحلة ١:** `python3 tools/validate_data.py` يمرّ على البيانات المُصلحة ويفشل على النسخة القديمة، و GitHub Actions يعطي نتيجة ناجحة.
+- **المرحلة ٢:**
+  - `./gradlew test lint :quran-sdk:connectedAndroidTest` ناجح على محاكيين (API 24 و 35).
+  - تشغيل التطبيق التجريبي مع لقطات شاشة.
+  - CI ناجح.
+- **المرحلة ٣ب:** `xcodebuild test` ناجح، والتطبيق المثال يعمل على المحاكي مع التحقق من التقليب والنقر بأداة iOS Simulator.
+- **النموذج على الويب:** يبقى يعمل بعد إعادة توليد البيانات، أتحقق منه محلياً ثم من رابط GitHub Pages.
+- **جدول الحالة** في `docs/readiness-plan.md` يُحدَّث بعد كل مرحلة بالنتيجة الفعلية، بما فيها أي فشل أو خطوة مؤجلة.
