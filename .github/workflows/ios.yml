@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "ios/**"
+      - "!ios/.derived/**"
       - "quranapp-main/quran-sdk/src/main/assets/quran.json"
       - "iOS-SDK/QuranSDK_QuranSDK.bundle/ayahinfo_1024.db"
       - ".github/workflows/ios.yml"
@@ -46,6 +47,13 @@ jobs:
       - name: Build for iOS (includes the SwiftUI page view)
         run: |
           xcodebuild build -scheme TaahudQuranSDK -destination "generic/platform=iOS Simulator" \
+            -skipPackagePluginValidation | xcbeautify || exit ${PIPESTATUS[0]}
+
+      - name: Build the example app
+        working-directory: ios/Example
+        run: |
+          xcodebuild build -project TaahudQuranExample.xcodeproj -scheme TaahudQuranExample \
+            -destination "generic/platform=iOS Simulator" CODE_SIGNING_ALLOWED=NO \
             -skipPackagePluginValidation | xcbeautify || exit ${PIPESTATUS[0]}
 
       - name: Tests on the iOS simulator

@@ -33,3 +33,8 @@ Package.resolved
 
 # Generated release artifacts
 /dist/
+
+# Xcode
+ios/.derived/
+xcuserdata/
+*.xcuserstate
