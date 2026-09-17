@@ -38,6 +38,7 @@ class QuranPageView @JvmOverloads constructor(
     private var boundApi: QuranApiImpl? = null
     private var maxPage: Int = 604
     private var listener: QuranPageListener? = null
+    private var pendingPage: Int? = null
 
     init {
         LayoutInflater.from(context).inflate(R.layout.quransdk_page_view, this, true)
@@ -70,6 +71,9 @@ class QuranPageView @JvmOverloads constructor(
                 listener = listener
             )
             pager.adapter = adapter
+            // goToPage() may have been called before the adapter existed (e.g. right after bind()).
+            pendingPage?.let { pager.setCurrentItem(it - 1, false) }
+            pendingPage = null
         }
     }
 
@@ -80,8 +84,16 @@ class QuranPageView @JvmOverloads constructor(
 
     fun goToPage(page: Int) {
         val safe = page.coerceIn(1, maxPage)
-        pager.post { pager.setCurrentItem(safe - 1, false) }
+        if (adapter == null) {
+            pendingPage = safe
+        } else {
+            pager.post { pager.setCurrentItem(safe - 1, false) }
+        }
     }
+
+    /** Current page (1-based). */
+    val currentPage: Int
+        get() = pendingPage ?: (pager.currentItem + 1)
 
     fun highlightAyah(ayahId: Int, page: Int) {
         adapter?.setSelectedAyah(ayahId, page)

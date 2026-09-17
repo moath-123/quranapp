@@ -20,6 +20,21 @@ interface QuranDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAyas(items: List<AyaEntity>)
 
+    @Query("DELETE FROM ayas")
+    suspend fun deleteAllAyas()
+
+    @Query("DELETE FROM suras")
+    suspend fun deleteAllSuras()
+
+    @Query("DELETE FROM chapters")
+    suspend fun deleteAllChapters()
+
+    @Query("SELECT COUNT(*) FROM ayas")
+    suspend fun countAyas(): Int
+
+    @Query("SELECT COUNT(*) FROM suras")
+    suspend fun countSuras(): Int
+
     @Query("SELECT * FROM ayas WHERE id = :ayahId LIMIT 1")
     suspend fun getAyaById(ayahId: Int): AyaEntity?
 

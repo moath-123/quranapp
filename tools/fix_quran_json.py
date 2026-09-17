@@ -23,6 +23,12 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+
+def open_db(path):
+    """فتح قاعدة SQLite للقراءة فقط بدون إنشاء ملفات جانبية (-wal/-shm) بجانب ملفات الحزمة."""
+    return sqlite3.connect(f"file:{path}?mode=ro&immutable=1", uri=True)
+
+
 ROOT = Path(__file__).resolve().parent.parent
 TARGETS = [
     ROOT / "quranapp-main/quran-sdk/src/main/assets/quran.json",
@@ -34,7 +40,7 @@ ODD_SPACES = re.compile("[  -​  　﻿]")
 
 
 def geometry():
-    con = sqlite3.connect(AYAHINFO)
+    con = open_db(AYAHINFO)
     rows = con.execute(
         "select sura_number, ayah_number, page_number, min(line_number), max(line_number) "
         "from glyphs group by 1, 2, 3 order by 1, 2, 3")

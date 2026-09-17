@@ -27,7 +27,7 @@ internal class QuranApiImpl(
 
     override suspend fun initialize() {
         withContext(Dispatchers.IO) {
-            QuranImporter.importIfNeeded(appContext, database)
+            if (QuranImporter.importIfNeeded(appContext, database)) repository.clearCache()
         }
     }
 

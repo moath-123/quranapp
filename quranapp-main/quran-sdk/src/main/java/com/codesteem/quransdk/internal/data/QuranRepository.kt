@@ -20,6 +20,10 @@ internal class QuranRepository(private val dao: QuranDao) {
         return prepared
     }
 
+    fun clearCache() {
+        cachedSearch = null
+    }
+
     suspend fun searchArabic(queryRaw: String, limit: Int = 200): List<SearchRow> {
         val q = ArabicNormalizer.normalize(queryRaw)
         if (q.isBlank()) return emptyList()

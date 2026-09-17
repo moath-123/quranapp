@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class QuranJson(
-    val suras: List<SuraJson>
+    val suras: List<SuraJson>,
+    val chapters: List<ChapterJson> = emptyList()
 )

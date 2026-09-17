@@ -23,6 +23,12 @@ import unicodedata
 from collections import defaultdict
 from pathlib import Path
 
+
+def open_db(path):
+    """فتح قاعدة SQLite للقراءة فقط بدون إنشاء ملفات جانبية (-wal/-shm) بجانب ملفات الحزمة."""
+    return sqlite3.connect(f"file:{path}?mode=ro&immutable=1", uri=True)
+
+
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_JSON = ROOT / "quranapp-main/quran-sdk/src/main/assets/quran.json"
 BUNDLE = ROOT / "iOS-SDK/QuranSDK_QuranSDK.bundle"
@@ -182,7 +188,7 @@ def check_text(c, ayahs):
     db = BUNDLE / "quran.ar.uthmani.db"
     if not c.check(sec, "ملف المرجع موجود", db.exists(), str(db)):
         return
-    con = sqlite3.connect(db)
+    con = open_db(db)
     ref = {(s, a): t for s, a, t in con.execute("select sura, ayah, text from arabic_text")}
     c.check(sec, f"المرجع فيه {TOTAL_AYAHS} آية", len(ref) == TOTAL_AYAHS, f"الموجود {len(ref)}")
 
@@ -209,7 +215,7 @@ def check_geometry(c, ayahs, edition):
     db = BUNDLE / "ayahinfo_1024.db"
     if not c.check(sec, "ملف المرجع موجود", db.exists(), str(db)):
         return []
-    con = sqlite3.connect(db)
+    con = open_db(db)
     pages = defaultdict(set)
     for s, a, p in con.execute("select distinct sura_number, ayah_number, page_number from glyphs"):
         pages[(s, a)].add(p)

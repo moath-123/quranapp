@@ -10,6 +10,12 @@ import json
 import sqlite3
 from pathlib import Path
 
+
+def open_db(path):
+    """فتح قاعدة SQLite للقراءة فقط بدون إنشاء ملفات جانبية (-wal/-shm) بجانب ملفات الحزمة."""
+    return sqlite3.connect(f"file:{path}?mode=ro&immutable=1", uri=True)
+
+
 ROOT = Path(__file__).resolve().parent.parent
 QURAN_JSON = ROOT / "quranapp-main/quran-sdk/src/main/assets/quran.json"
 AYAHINFO = ROOT / "iOS-SDK/QuranSDK_QuranSDK.bundle/ayahinfo_1024.db"
@@ -26,7 +32,7 @@ def build_data(d):
 
 def build_rects(d):
     ids = {(a["sura"], a["aya"]): a["id"] for s in d["suras"] for a in s["ayas"]}
-    con = sqlite3.connect(AYAHINFO)
+    con = open_db(AYAHINFO)
     # كل سطر: مستطيل واحد لكل آية بعرضها الفعلي، وبارتفاع السطر كاملاً ليكون التظليل متناسقاً
     line_band = {(p, l): (y1, y2) for p, l, y1, y2 in con.execute(
         "select page_number, line_number, min(min_y), max(max_y) from glyphs group by 1, 2")}

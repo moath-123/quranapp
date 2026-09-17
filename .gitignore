@@ -22,3 +22,6 @@ captures/
 # SQLite side files created when opening WAL-mode databases
 *.db-shm
 *.db-wal
+
+# Local build/test logs
+/.*.log
