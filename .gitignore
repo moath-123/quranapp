@@ -18,3 +18,7 @@ captures/
 .idea/assetWizardSettings.xml
 .android-setup.log
 .gradle-build.log
+
+# SQLite side files created when opening WAL-mode databases
+*.db-shm
+*.db-wal
