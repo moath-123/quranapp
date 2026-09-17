@@ -11,5 +11,5 @@ ZIPFoundation (https://github.com/weichsel/ZIPFoundation)
   Used by ios/TaahudQuranSDK to extract the page-image archive.
 
 Madani mushaf page images and ayahinfo_1024.db
-  Source: Quran.com (files.quran.app). Redistribution terms must be confirmed
-  with the Quran Foundation before shipping (docs/open-questions.md, Q2).
+  Source: Quran.com / Quran Foundation (files.quran.app), published for public use.
+  Attribute Quran.com in the app's about screen.
