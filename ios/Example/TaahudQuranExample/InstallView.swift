@@ -19,7 +19,7 @@ struct InstallView: View {
                 .padding(.horizontal, 32)
 
             status
-                .frame(height: 70)
+                .frame(minHeight: 70)
                 .padding(.horizontal, 40)
 
             Spacer()
@@ -50,11 +50,16 @@ struct InstallView: View {
             }
         case .failed(let message):
             VStack(spacing: 10) {
-                Text("تعذّر التنزيل: \(message)")
-                    .font(.footnote)
+                Text("تعذّر تنزيل الصفحات. تأكد من الاتصال بالإنترنت ثم أعد المحاولة.")
+                    .font(.footnote.bold())
                     .foregroundColor(.red)
                     .multilineTextAlignment(.center)
                     .accessibilityIdentifier("installError")
+                Text(message)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                    .lineLimit(2)
+                    .environment(\.layoutDirection, .leftToRight)
                 primaryButton("إعادة المحاولة")
             }
         case .ready:

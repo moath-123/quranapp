@@ -62,6 +62,8 @@ struct MushafScreen: View {
         }
         .onChange(of: page) { newValue in
             model.savePage(newValue)
+            // The selected ayah belongs to the previous page; drop it so its card doesn't linger.
+            if let selected, selected.pageNumber != newValue { self.selected = nil }
         }
         .sheet(isPresented: $showIndex) {
             SurahIndexView { target in
