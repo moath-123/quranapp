@@ -25,3 +25,8 @@ captures/
 
 # Local build/test logs
 /.*.log
+
+# SwiftPM
+.build/
+.swiftpm/
+Package.resolved

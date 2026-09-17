@@ -1,0 +1,54 @@
+name: iOS SDK
+
+on:
+  push:
+    paths:
+      - "ios/**"
+      - "quranapp-main/quran-sdk/src/main/assets/quran.json"
+      - "iOS-SDK/QuranSDK_QuranSDK.bundle/ayahinfo_1024.db"
+      - ".github/workflows/ios.yml"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ios:
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: ios/TaahudQuranSDK
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bundled resources match the shared sources
+        working-directory: .
+        run: |
+          cmp quranapp-main/quran-sdk/src/main/assets/quran.json ios/TaahudQuranSDK/Sources/TaahudQuranCore/Resources/quran.json
+          cmp iOS-SDK/QuranSDK_QuranSDK.bundle/ayahinfo_1024.db ios/TaahudQuranSDK/Sources/TaahudQuranCore/Resources/ayahinfo_1024.db
+
+      - name: Core tests on macOS (swift test)
+        run: swift test
+
+      - name: Pick an iPhone simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          ios = sorted((k for k in devices if "iOS" in k), key=lambda k: [int(x) for x in k.split("iOS-")[-1].split("-")])
+          for runtime in reversed(ios):
+              for d in devices[runtime]:
+                  if d["name"].startswith("iPhone"):
+                      print(d["udid"]); sys.exit()
+          ')
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+          xcodebuild -list
+
+      - name: Build for iOS (includes the SwiftUI page view)
+        run: |
+          xcodebuild build -scheme TaahudQuranSDK -destination "generic/platform=iOS Simulator" \
+            -skipPackagePluginValidation | xcbeautify || exit ${PIPESTATUS[0]}
+
+      - name: Tests on the iOS simulator
+        run: |
+          xcodebuild test -scheme TaahudQuranSDK -destination "id=${{ steps.sim.outputs.udid }}" \
+            -skipPackagePluginValidation | xcbeautify || exit ${PIPESTATUS[0]}

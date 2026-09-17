@@ -1,0 +1,15 @@
+Quran App & SDK — third-party notices
+
+quran-ios (https://github.com/quran/quran-ios)
+  Apache License 2.0. Copyright Quran.com / quran-ios contributors.
+  tools/reference/quran-ios-madani.json contains page/juz arrays extracted from
+  Model/QuranKit/Sources/ReadingInfo (commit 83d4ad73dd351ca7f55f2a55f9cd81b21b1e846f),
+  used to validate the bundled Quran data.
+
+ZIPFoundation (https://github.com/weichsel/ZIPFoundation)
+  MIT License. Copyright (c) 2017-2024 Thomas Zoechling.
+  Used by ios/TaahudQuranSDK to extract the page-image archive.
+
+Madani mushaf page images and ayahinfo_1024.db
+  Source: Quran.com (files.quran.app). Redistribution terms must be confirmed
+  with the Quran Foundation before shipping (docs/open-questions.md, Q2).

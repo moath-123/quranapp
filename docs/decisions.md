@@ -51,3 +51,14 @@
 **الحالة:** معتمد
 
 `tools/reference/quran-ios-madani.json` نسخة من مصفوفات quran-ios (بدايات الصفحات والأجزاء) عند commit محدد، مع ذكر الترخيص. الفحص بذلك لا يحتاج إنترنت ونتيجته ثابتة.
+
+## D8 — جوهر iOS مستقل بدل الاعتماد المباشر على حزم quran-ios
+**الحالة:** معتمد (تفصيل لـ D1)
+
+حزمة `QuranEngine` في quran-ios معرّفة لـiOS فقط، وتجلب GRDB و swift-log وغيرها، وخدمة الصور فيها مبنية على UIKit، فلا يمكن بناؤها أو اختبارها بدون Xcode.
+لذلك بنينا `TaahudQuranCore`:
+- Foundation و SQLite3 و CryptoKit، مع اعتمادية خارجية واحدة هي ZIPFoundation.
+- يقرأ نفس `quran.json` ونفس `ayahinfo_1024.db`.
+- يُختبر الآن بـ`swift test` على macOS، ويُبنى لـiOS في GitHub Actions.
+
+quran-ios يبقى المرجع للبيانات (`tools/reference`) ولنمط التحقق من التنزيل. حزمه المتخصصة (التلاوة، الترجمة، الطبعات الأخرى) يمكن إضافتها لاحقاً عند الحاجة.
