@@ -37,3 +37,24 @@ struct RealArchiveTests {
         print("REAL_ARCHIVE seconds=\(Int(seconds)) progressEvents=\(fractions.count)")
     }
 }
+
+/// Installs an archive produced by `tools/package_pages.sh` with its checksum pinned.
+/// Opt-in: `TAAHUD_PACKAGED_ARCHIVE=dist/pages/images_1024-v1.zip TAAHUD_PACKAGED_SHA=<sha> ./run-tests.sh --filter PackagedArchiveTests`
+@Suite(.enabled(if: ProcessInfo.processInfo.environment["TAAHUD_PACKAGED_ARCHIVE"] != nil))
+struct PackagedArchiveTests {
+
+    @Test func installsThePackagedArchiveWithPinnedChecksum() async throws {
+        let env = ProcessInfo.processInfo.environment
+        let archive = URL(fileURLWithPath: try #require(env["TAAHUD_PACKAGED_ARCHIVE"]))
+        let sha = try #require(env["TAAHUD_PACKAGED_SHA"])
+        let storage = FileManager.default.temporaryDirectory
+            .appendingPathComponent("TaahudQuranPackaged-\(UUID().uuidString)", isDirectory: true)
+        defer { try? FileManager.default.removeItem(at: storage) }
+
+        let api = QuranAPI(config: QuranConfig(pagesArchiveURL: archive, pagesArchiveSHA256: sha, storageDirectory: storage))
+        try await api.ensurePagesInstalled()
+        #expect(api.arePagesInstalled)
+        let source = try #require(CGImageSourceCreateWithURL(api.pageImageURL(604) as CFURL, nil))
+        #expect(CGImageSourceGetCount(source) == 1)
+    }
+}

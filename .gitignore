@@ -30,3 +30,6 @@ captures/
 .build/
 .swiftpm/
 Package.resolved
+
+# Generated release artifacts
+/dist/

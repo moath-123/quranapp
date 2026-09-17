@@ -95,7 +95,7 @@ dependencyResolutionManagement {
 In app `build.gradle.kts`:
 
 ```kotlin
-implementation("com.codesteem:quran-sdk:1.0.0")
+implementation("com.codesteem:quran-sdk:1.1.0")
 ```
 
 ---
@@ -279,6 +279,8 @@ The SDK ships `consumer-rules.pro`. If you use R8/ProGuard, ensure Room and SDK 
 
 ## Version
 
+**1.1.0** — Data fixes, atomic versioned import, juz start pages fixed, tests. See `CHANGELOG.md` at the repository root.
+
 **1.0.0** — Initial SDK release with data APIs and embeddable page view.
 
 ---
@@ -286,4 +288,4 @@ The SDK ships `consumer-rules.pro`. If you use R8/ProGuard, ensure Room and SDK 
 ## Support
 
 Package: `com.codesteem.quransdk`  
-Artifact: `com.codesteem:quran-sdk:1.0.0`
+Artifact: `com.codesteem:quran-sdk:1.1.0`
