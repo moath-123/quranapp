@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.2.0 — 2026-09-21
+
+Pilot readiness (phase 5 tooling).
+
+### iOS SDK (`TaahudQuranSDK`)
+- `QuranConfig.onEvent` / `QuranEvent`: data load and page-install events (start, retry, success with duration/bytes/attempts, failure with error code) for pilot metrics.
+- `run-tests.sh` builds outside iCloud-synced folders (fixes ad-hoc signing of the test bundle).
+
+### Example app
+- Remote app config (`new_mushaf` flag + page-image settings) with cached fallback; legacy mushaf when the flag is off.
+- About screen with Quran.com attribution, server settings and the SDK event log.
+- Fixed: selected-ayah card lingered after changing pages; download errors now show a clear Arabic message.
+
+### Server (`server/laravel-kit`, new)
+- `GET /api/quran/app-config`: kill switch, stable percentage rollout, tester allowlist, page-image settings.
+- Wird sync (upsert by `client_id`, synced deletes, per-timezone stats), bookmarks, reading position — ayahs by id 1–6236.
+- Idempotent `install.sh`; 15 feature tests run in CI on a fresh Laravel app (PHP 8.3/8.4).
+
 ## 1.1.0 — 2026-09-17
 
 Readiness work before adopting the SDK in Taahud (see `docs/readiness-plan.md`).

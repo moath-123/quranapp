@@ -4,6 +4,7 @@
 
 [![Data integrity](https://github.com/moath-123/quranapp/actions/workflows/data.yml/badge.svg)](https://github.com/moath-123/quranapp/actions/workflows/data.yml)
 [![Android SDK](https://github.com/moath-123/quranapp/actions/workflows/android.yml/badge.svg)](https://github.com/moath-123/quranapp/actions/workflows/android.yml)
+[![Laravel kit](https://github.com/moath-123/quranapp/actions/workflows/laravel-kit.yml/badge.svg)](https://github.com/moath-123/quranapp/actions/workflows/laravel-kit.yml)
 [![iOS SDK](https://github.com/moath-123/quranapp/actions/workflows/ios.yml/badge.svg)](https://github.com/moath-123/quranapp/actions/workflows/ios.yml)
 
 **النموذج التجريبي:** https://moath-123.github.io/quranapp/
@@ -16,6 +17,7 @@
 | `ios/TaahudQuranSDK/` | iOS: حزمة Swift جديدة بديلة عن الملف المُجمَّع، بنفس واجهة أندرويد ونفس البيانات |
 | `iOS-SDK/` | الملف المُجمَّع القديم (لا يعمل، انظر F1) وحزمة الموارد (`ayahinfo_1024.db` وغيرها) |
 | `web-demo/` | نموذج ويب: صفحات مصحف المدينة، وتسجيل الورد، والبحث، والمفضلة، ومختبر `QuranApi` |
+| `server/laravel-kit/` | حزمة Laravel لخادم تعاهد: مفتاح الإطلاق التدريجي، وإعدادات الصور، ومزامنة الورد والمفضلة |
 | `tools/` | فحص البيانات وإصلاحها، وتوليد بيانات النموذج، وتجهيز حزمة الصور، وإعداد بيئة أندرويد |
 | `docs/` | خطة الجاهزية والملاحظات والقرارات وتقارير الاختبار وأدلة الدمج |
 
