@@ -161,6 +161,16 @@ struct SurahIndexView: View {
             }
             .navigationTitle("الفهرس")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    NavigationLink {
+                        AboutView()
+                    } label: {
+                        Image(systemName: "info.circle")
+                    }
+                    .accessibilityIdentifier("aboutButton")
+                }
+            }
         }
     }
 }

@@ -94,9 +94,16 @@ public actor QuranAPI {
         guard let url = resources.url(forResource: "quran", withExtension: "json") else {
             throw QuranError.missingResource("quran.json")
         }
-        let loaded = try QuranDataStore.load(from: url)
-        store = loaded
-        return loaded
+        let started = Date()
+        do {
+            let loaded = try QuranDataStore.load(from: url)
+            store = loaded
+            config.onEvent?(.dataLoaded(milliseconds: Int(Date().timeIntervalSince(started) * 1000)))
+            return loaded
+        } catch let error as QuranError {
+            config.onEvent?(.dataFailed(error))
+            throw error
+        }
     }
 
     private func loadedGeometry() throws -> PageGeometry {

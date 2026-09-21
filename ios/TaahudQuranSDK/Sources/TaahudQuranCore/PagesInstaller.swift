@@ -46,9 +46,32 @@ actor PagesInstaller {
 
     func install(progress: (@Sendable (PagesInstallProgress) -> Void)?) async throws {
         if isInstalled {
+            config.onEvent?(.pagesAlreadyInstalled)
             progress?(.installed)
             return
         }
+        let version = config.pagesVersion
+        config.onEvent?(.pagesInstallStarted(version: version, host: config.pagesArchiveURL.host ?? "local"))
+        let started = Date()
+        attempts = 0
+        do {
+            let bytes = try await performInstall(progress: progress)
+            config.onEvent?(.pagesInstalled(
+                version: version, seconds: Date().timeIntervalSince(started), downloadBytes: bytes, attempts: attempts))
+        } catch {
+            if !(error is CancellationError) {
+                let reported = (error as? QuranError) ?? .downloadFailed(error.localizedDescription)
+                config.onEvent?(.pagesInstallFailed(
+                    version: version, error: reported, seconds: Date().timeIntervalSince(started), attempts: attempts))
+            }
+            throw error
+        }
+    }
+
+    private var attempts = 0
+
+    /// Returns the downloaded archive size in bytes.
+    private func performInstall(progress: (@Sendable (PagesInstallProgress) -> Void)?) async throws -> Int64 {
         try fileManager.createDirectory(at: config.storageDirectory, withIntermediateDirectories: true)
         let work = config.storageDirectory.appendingPathComponent("tmp-\(UUID().uuidString)", isDirectory: true)
         try fileManager.createDirectory(at: work, withIntermediateDirectories: true)
@@ -56,6 +79,7 @@ actor PagesInstaller {
 
         let archive = work.appendingPathComponent("pages.zip")
         try await downloadWithRetries(to: archive) { progress?(.downloading(fraction: $0)) }
+        let bytes = (try? fileManager.attributesOfItem(atPath: archive.path)[.size] as? Int64) ?? 0
 
         if let expected = config.pagesArchiveSHA256?.lowercased() {
             progress?(.verifying)
@@ -86,6 +110,7 @@ actor PagesInstaller {
         try excludeFromBackup(config.storageDirectory)
         removeOlderVersions()
         progress?(.installed)
+        return bytes
     }
 
     // MARK: - Download
@@ -93,12 +118,14 @@ actor PagesInstaller {
     private func downloadWithRetries(to destination: URL, progress: @escaping @Sendable (Double) -> Void) async throws {
         var attempt = 0
         while true {
+            attempts += 1
             do {
                 try await downloadOnce(config.pagesArchiveURL, to: destination, progress: progress)
                 return
             } catch {
                 if error is CancellationError || attempt >= config.downloadRetries { throw error }
                 attempt += 1
+                config.onEvent?(.pagesDownloadRetry(attempt: attempt, error: error.localizedDescription))
                 try await Task.sleep(nanoseconds: UInt64(attempt) * 1_000_000_000)
             }
         }

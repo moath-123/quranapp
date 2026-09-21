@@ -12,19 +12,23 @@ public struct QuranConfig: Sendable {
     public var pagesVersion: Int
     /// Extra download attempts after the first failure (with increasing delay).
     public var downloadRetries: Int
+    /// Receives SDK events for the host's analytics / crash reporting. Called on a background thread.
+    public var onEvent: (@Sendable (QuranEvent) -> Void)?
 
     public init(
         pagesArchiveURL: URL = URL(string: "https://files.quran.app/hafs/madani/zips/images_1024.zip")!,
         pagesArchiveSHA256: String? = nil,
         storageDirectory: URL = QuranConfig.defaultStorageDirectory,
         pagesVersion: Int = 1,
-        downloadRetries: Int = 3
+        downloadRetries: Int = 3,
+        onEvent: (@Sendable (QuranEvent) -> Void)? = nil
     ) {
         self.pagesArchiveURL = pagesArchiveURL
         self.pagesArchiveSHA256 = pagesArchiveSHA256
         self.storageDirectory = storageDirectory
         self.pagesVersion = pagesVersion
         self.downloadRetries = downloadRetries
+        self.onEvent = onEvent
     }
 
     public static var defaultStorageDirectory: URL {
